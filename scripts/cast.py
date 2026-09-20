@@ -67,6 +67,32 @@ def mod_or_max(n: int, m: int) -> int:
     return m if r == 0 else r
 
 
+YANG = "▅▅▅▅▅▅▅"
+YIN = "▅▅▅ ▅▅▅"
+
+
+def line_name(index: int, yang: bool) -> str:
+    """index 从 1 到 6, 返回 初九/六二/上六 这样的爻名。"""
+    label = "九" if yang else "六"
+    if index == 1:
+        return "初" + label
+    if index == 6:
+        return "上" + label
+    return label + LINE_NAMES[index - 1]
+
+
+def draw(h: dict, moving: int | None = None, title: str = "") -> str:
+    """把卦画成六行文字, 自上而下, 动爻标出。"""
+    rows = [f"{title}{h['full_name']}（上{h['upper']}下{h['lower']}）"]
+    for i in range(6, 0, -1):
+        yang = h["binary"][i - 1] == "1"
+        row = f"{line_name(i, yang)} {YANG if yang else YIN}"
+        if moving == i:
+            row += "  ← 动爻"
+        rows.append(row)
+    return "\n".join(rows)
+
+
 def hexagram_view(h: dict, moving: int | None = None) -> dict:
     view = {
         "number": h["number"],
@@ -115,14 +141,7 @@ def cast(n1: int, n2: int, n3: int, order: str, data: dict) -> dict:
     # 综卦: 上下颠倒
     zong = by_bin[ben_bin[::-1]]
 
-    line_yang = ben_bin[moving - 1] == "1"
-    moving_label = ("九" if line_yang else "六")
-    if moving == 1:
-        moving_name = "初" + moving_label
-    elif moving == 6:
-        moving_name = "上" + moving_label
-    else:
-        moving_name = moving_label + LINE_NAMES[moving - 1]
+    moving_name = line_name(moving, ben_bin[moving - 1] == "1")
 
     # 校验: 用本卦名反查上下卦
     check_ok = (ben["upper"] == upper_name and ben["lower"] == lower_name
@@ -147,6 +166,7 @@ def cast(n1: int, n2: int, n3: int, order: str, data: dict) -> dict:
             ),
         },
         "moving_line_name": moving_name,
+        "diagram": draw(ben, moving, "本卦 ") + "\n\n" + draw(bian, None, "变卦 "),
         "ben_gua": hexagram_view(ben, moving),
         "bian_gua": hexagram_view(bian),
         "hu_gua": hexagram_view(hu),
@@ -167,6 +187,7 @@ def lookup(key: str, data: dict) -> dict:
     if h is None:
         raise SystemExit(f"未找到卦: {key}")
     out = hexagram_view(h)
+    out["diagram"] = draw(h)
     out["lines"] = h["lines"]
     if h.get("extra"):
         out["extra"] = h["extra"]
