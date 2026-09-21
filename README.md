@@ -5,16 +5,38 @@
 
 ## 安装
 
-把整个 `digital-gua/` 文件夹复制到你的 skills 目录：
+需要 Python 3.8+（终端输 `python --version` 检查），无第三方依赖。
+
+**方式一：git clone（推荐，以后 `git pull` 即可更新）**
+
+Windows PowerShell：
+
+```powershell
+git clone https://github.com/<你的用户名>/digital-gua.git $env:USERPROFILE\.kiro\skills\digital-gua
+```
+
+Mac / Linux：
+
+```bash
+git clone https://github.com/<你的用户名>/digital-gua.git ~/.kiro/skills/digital-gua
+```
+
+用 Claude Code 的把路径里的 `.kiro` 换成 `.claude`。
+
+**方式二：下载 ZIP**
+
+仓库页面点 **Code → Download ZIP**，解压，把文件夹改名为 `digital-gua`（去掉 `-main` 后缀），放到下表对应目录：
 
 | 工具 | 目录 |
 |------|------|
-| Kiro（项目级） | `.kiro/skills/digital-gua/` |
-| Kiro（全局） | `~/.kiro/skills/digital-gua/` |
-| Claude Code（项目级） | `.claude/skills/digital-gua/` |
+| Kiro（全局，所有项目可用） | `~/.kiro/skills/digital-gua/` |
+| Kiro（项目级） | `<项目>/.kiro/skills/digital-gua/` |
 | Claude Code（全局） | `~/.claude/skills/digital-gua/` |
+| Claude Code（项目级） | `<项目>/.claude/skills/digital-gua/` |
 
-需要 Python 3.8+，无第三方依赖。
+Windows 上 `~` 就是 `C:\Users\<你的用户名>`，在资源管理器地址栏输入 `%USERPROFILE%\.kiro\skills` 可直接打开；`skills` 文件夹不存在就新建一个。
+
+装好后**新开一个会话**才会加载，旧会话不认。
 
 ## 用法
 
