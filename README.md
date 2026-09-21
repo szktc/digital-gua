@@ -1,4 +1,4 @@
-# digital-gua — 数字卦起卦解卦 Skill
+﻿# digital-gua — 数字卦起卦解卦 Skill
 
 给 AI 编程助手（Kiro / Claude Code / Codex 等支持 SKILL.md 的工具）用的数字卦 skill。
 起卦和查表由脚本完成，模型只负责解读，避免口算出错和编造经文。
@@ -12,13 +12,13 @@
 Windows PowerShell：
 
 ```powershell
-git clone https://github.com/<你的用户名>/digital-gua.git $env:USERPROFILE\.kiro\skills\digital-gua
+git clone https://github.com/szktc/digital-gua.git $env:USERPROFILE\.kiro\skills\digital-gua
 ```
 
 Mac / Linux：
 
 ```bash
-git clone https://github.com/<你的用户名>/digital-gua.git ~/.kiro/skills/digital-gua
+git clone https://github.com/szktc/digital-gua.git ~/.kiro/skills/digital-gua
 ```
 
 用 Claude Code 的把路径里的 `.kiro` 换成 `.claude`。
