@@ -24,7 +24,9 @@ import json
 import sys
 from pathlib import Path
 
-DATA_PATH = Path(__file__).resolve().parent.parent / "references" / "hexagrams.json"
+REF_DIR = Path(__file__).resolve().parent.parent / "references"
+DATA_PATH = REF_DIR / "hexagrams.json"
+MEANINGS_PATH = REF_DIR / "meanings.json"
 
 # 先天八卦: 数 -> 名; 二进制自下而上, 1 阳 0 阴
 TRIGRAM_BY_NUM = {
@@ -44,7 +46,16 @@ LINE_NAMES = ["初", "二", "三", "四", "五", "上"]
 
 def load_data() -> dict:
     with DATA_PATH.open(encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    meanings = {}
+    if MEANINGS_PATH.exists():
+        with MEANINGS_PATH.open(encoding="utf-8") as f:
+            meanings = json.load(f).get("meanings", {})
+    for h in data["hexagrams"]:
+        m = meanings.get(str(h["number"]))
+        h["core"] = m["core"] if m else None
+        h["lines_key"] = m["lines"] if m else None
+    return data
 
 
 def build_index(data: dict):
@@ -103,9 +114,12 @@ def hexagram_view(h: dict, moving: int | None = None) -> dict:
         "binary_bottom_to_top": h["binary"],
         "judgement": h["judgement"],
         "image": h["image"],
+        "core": h.get("core"),
     }
     if moving is not None:
         view["moving_line_text"] = h["lines"][moving - 1]
+        keys = h.get("lines_key")
+        view["moving_line_key"] = keys[moving - 1] if keys else None
     return view
 
 
@@ -189,6 +203,7 @@ def lookup(key: str, data: dict) -> dict:
     out = hexagram_view(h)
     out["diagram"] = draw(h)
     out["lines"] = h["lines"]
+    out["lines_key"] = h.get("lines_key")
     if h.get("extra"):
         out["extra"] = h["extra"]
     return out
