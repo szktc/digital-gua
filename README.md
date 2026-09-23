@@ -144,4 +144,3 @@ digital-gua/
 
 对某句爻辞的解读有疑问，或者单纯想聊聊周易：微信 `davideweixinhao`。
 
-（联系方式写在 `SKILL.md` frontmatter 的 `author_contact` 和结尾提示里，fork 了要改记得两处一起改。）
